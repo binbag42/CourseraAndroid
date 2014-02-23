@@ -12,6 +12,7 @@ import java.net.URL;
 
 import android.app.Activity;
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -183,20 +184,28 @@ public class DownloaderTask extends AsyncTask<String, Void, String[]> {
 							// TODO: Set the notification View's text to
 							// reflect whether or the download completed
 							// successfully
-
-
+							if (success) {
+								mContentView.setTextViewText(R.id.text, successMsg);
+							}
+							else {
+								mContentView.setTextViewText(R.id.text, failMsg);								
+							}
 							
 							// TODO: Use the Notification.Builder class to
 							// create the Notification. You will have to set
 							// several pieces of information. You can use
 							// android.R.drawable.stat_sys_warning
 							// for the small icon. You should also setAutoCancel(true). 
-
-							Notification.Builder notificationBuilder = null;
+							
+							Notification.Builder notificationBuilder = new Notification.Builder(mApplicationContext);
+							notificationBuilder.setSmallIcon(R.drawable.ic_launcher)
+							.setContent(mContentView)
+							.setAutoCancel(true)
+							.setContentIntent(pendingIntent);
 
 							// TODO: Send the notification
-
-							
+							NotificationManager mNotificationManager = (NotificationManager) mApplicationContext.getSystemService(Context.NOTIFICATION_SERVICE);
+							mNotificationManager.notify(MY_NOTIFICATION_ID, notificationBuilder.build());
 							
 							log("Notification Area Notification sent");
 						}
