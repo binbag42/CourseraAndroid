@@ -12,7 +12,6 @@ import java.net.URL;
 
 import android.app.Activity;
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -165,15 +164,13 @@ public class DownloaderTask extends AsyncTask<String, Void, String[]> {
 
 						// TODO: Check whether the result code is RESULT_OK
 
-						if (/*change this*/ true) {
+						if (getResultCode()!=Activity.RESULT_OK) {
 
 							// TODO:  If so, create a PendingIntent using the
 							// restartMainActivityIntent and set its flags
 							// to FLAG_UPDATE_CURRENT
 							
-							final PendingIntent pendingIntent = null;
-							
-
+							final PendingIntent pendingIntent = PendingIntent.getBroadcast(context, MY_NOTIFICATION_ID, restartMainActivtyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 							// Uses R.layout.custom_notification for the
 							// layout of the notification View. The xml 
