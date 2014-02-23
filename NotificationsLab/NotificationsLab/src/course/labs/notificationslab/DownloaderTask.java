@@ -165,13 +165,13 @@ public class DownloaderTask extends AsyncTask<String, Void, String[]> {
 
 						// TODO: Check whether the result code is RESULT_OK
 
-						if (getResultCode()!=Activity.RESULT_OK) {
-
+						if (getResultCode()==Activity.RESULT_OK) {
+				
 							// TODO:  If so, create a PendingIntent using the
 							// restartMainActivityIntent and set its flags
 							// to FLAG_UPDATE_CURRENT
 							
-							final PendingIntent pendingIntent = PendingIntent.getBroadcast(context, MY_NOTIFICATION_ID, restartMainActivtyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+							final PendingIntent pendingIntent = PendingIntent.getActivity(context, MY_NOTIFICATION_ID, restartMainActivtyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 							// Uses R.layout.custom_notification for the
 							// layout of the notification View. The xml 
