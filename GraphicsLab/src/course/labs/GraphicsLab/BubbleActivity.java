@@ -240,7 +240,7 @@ public class BubbleActivity extends Activity {
 			if (speedMode == RANDOM) {
 				
 				// TODO - set rotation in range [1..3]
-				mDRotate = 0;
+				mDRotate = r.nextInt(3)+1;
 
 				
 			} else {
@@ -274,8 +274,8 @@ public class BubbleActivity extends Activity {
 				// TODO - Set movement direction and speed
 				// Limit movement speed in the x and y
 				// direction to [-3..3].
-
-
+				mDx= r.nextInt(7)-3;
+				mDy= r.nextInt(7)-3;
 			
 			
 			
@@ -293,7 +293,7 @@ public class BubbleActivity extends Activity {
 			} else {
 			
 				//TODO - set scaled bitmap size in range [1..3] * BITMAP_SIZE
-				mScaledBitmapWidth = 0;
+				mScaledBitmapWidth = (r.nextInt(3)+1) * BITMAP_SIZE;
 			
 			}
 
@@ -377,8 +377,8 @@ public class BubbleActivity extends Activity {
 
 			//TODO - set mDx and mDy to be the new velocities divided by the REFRESH_RATE
 			
-			mDx = 0;
-			mDy = 0;
+			mDx += velocityX / REFRESH_RATE;
+			mDy += velocityY / REFRESH_RATE;
 
 		}
 
@@ -387,7 +387,7 @@ public class BubbleActivity extends Activity {
 		protected synchronized void onDraw(Canvas canvas) {
 
 			// TODO - save the canvas
-
+			canvas.save();
 
 			// TODO - increase the rotation of the original image by mDRotate
 
@@ -423,9 +423,13 @@ public class BubbleActivity extends Activity {
 		private boolean isOutOfView() {
 
 			// TODO - Return true if the BubbleView has exited the screen
-
-			return false;
-
+if (mXPos+mScaledBitmapWidth<0 | mXPos>mDisplayWidth | mYPos<0 | mYPos+mScaledBitmapWidth>mDisplayHeight) {
+	return true;
+}
+else {
+	return false;
+}
+	
 		}
 	}
 
