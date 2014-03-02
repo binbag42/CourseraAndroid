@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 public class BubbleActivity extends Activity {
@@ -134,11 +135,16 @@ public class BubbleActivity extends Activity {
 				// TODO - Implement onFling actions.
 				// You can get all Views in mFrame using the
 				// ViewGroup.getChildCount() method
-
-				
-				
-				
-				return false;
+				int count = mFrame.getChildCount();
+		        boolean flinged=false;
+		        for (int i = 0; i < count; i++) {
+		        	if(((BubbleView) mFrame.getChildAt(i)).intersects(event1.getRawX(),event1.getRawY())){
+		        		((BubbleView) mFrame.getChildAt(i)).deflect(velocityX, velocityY);
+		        		flinged=true;
+		        	}
+		        }
+		
+				return flinged;
 				
 			}
 
@@ -152,19 +158,17 @@ public class BubbleActivity extends Activity {
 				// TODO - Implement onSingleTapConfirmed actions.
 				// You can get all Views in mFrame using the
 				// ViewGroup.getChildCount() method
-
-
+		        int count = mFrame.getChildCount();
+		        boolean poped=false;
+		        for (int i = 0; i < count; i++) {
+		        	if(((BubbleView) mFrame.getChildAt(i)).intersects(event.getRawX(),event.getRawY())){
+		        		((BubbleView) mFrame.getChildAt(i)).stop(true);
+		        		poped=true;
+		        	}
+		        }
+				if (!poped) mFrame.addView(new BubbleView(mFrame.getContext(), event.getRawX(),event.getRawY()));
 				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				return false;
+				return poped;
 			}
 		});
 	}
