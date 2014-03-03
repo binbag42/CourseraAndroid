@@ -143,8 +143,7 @@ public class BubbleActivity extends Activity {
 		        	}
 		        }
 		
-		        log("leaving on Fling, value of flinged: "+flinged);
-		        
+	        
 				return flinged;
 				
 			}
@@ -168,14 +167,11 @@ public class BubbleActivity extends Activity {
 		        	}
 		        }
 				if (!poped){
-					
-					log("new bubble because no pop");
-					
 					BubbleView mBubble=new BubbleView(mFrame.getContext(), event.getRawX(),event.getRawY());
 					mFrame.addView(mBubble);
 					mBubble.start();
 				}
-				log("poped value at end of on single tap: "+poped);
+
 				return poped;
 			}
 		});
@@ -331,7 +327,7 @@ public class BubbleActivity extends Activity {
 					// stop the BubbleView's Worker Thread. 
 					// Otherwise, request that the BubbleView be redrawn. 
 					if (moveWhileOnScreen()){
-						//executor.shutdown();
+						BubbleView.this.stop(false);
 					}
 					else{
 						BubbleView.this.postInvalidate();
@@ -438,7 +434,6 @@ public class BubbleActivity extends Activity {
 
 			// TODO - Return true if the BubbleView has exited the screen
 			if (mXPos+mScaledBitmapWidth/2<0 || mXPos-mScaledBitmapWidth/2>mDisplayWidth || mYPos+mScaledBitmapWidth/2<0 || mYPos-mScaledBitmapWidth/2>mDisplayHeight) {
-				log("isOutOfView: true");
 				return true;
 			}
 			else {
