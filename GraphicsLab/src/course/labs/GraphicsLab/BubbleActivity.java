@@ -21,7 +21,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 public class BubbleActivity extends Activity {
@@ -139,11 +138,13 @@ public class BubbleActivity extends Activity {
 		        boolean flinged=false;
 		        for (int i = 0; i < count; i++) {
 		        	if(((BubbleView) mFrame.getChildAt(i)).intersects(event1.getRawX(),event1.getRawY())){
-		        		((BubbleView) mFrame.getChildAt(i)).deflect(velocityX, velocityY);
+		        		((BubbleView) mFrame.getChildAt(i)).deflect(event1.getRawX()-event2.getRawX(), event1.getRawY()-event2.getRawY());
 		        		flinged=true;
 		        	}
 		        }
 		
+		        log("leaving on Fling, value of flinged: "+flinged);
+		        
 				return flinged;
 				
 			}
@@ -166,8 +167,15 @@ public class BubbleActivity extends Activity {
 		        		poped=true;
 		        	}
 		        }
-				if (!poped) mFrame.addView(new BubbleView(mFrame.getContext(), event.getRawX(),event.getRawY()));
-				
+				if (!poped){
+					
+					log("new bubble because no pop");
+					
+					BubbleView mBubble=new BubbleView(mFrame.getContext(), event.getRawX(),event.getRawY());
+					mFrame.addView(mBubble);
+					mBubble.start();
+				}
+				log("poped value at end of on single tap: "+poped);
 				return poped;
 			}
 		});
@@ -429,7 +437,8 @@ public class BubbleActivity extends Activity {
 		private boolean isOutOfView() {
 
 			// TODO - Return true if the BubbleView has exited the screen
-			if (mXPos+mScaledBitmapWidth<0 | mXPos>mDisplayWidth | mYPos<0 | mYPos+mScaledBitmapWidth>mDisplayHeight) {
+			if (mXPos+mScaledBitmapWidth/2<0 || mXPos-mScaledBitmapWidth/2>mDisplayWidth || mYPos+mScaledBitmapWidth/2<0 || mYPos-mScaledBitmapWidth/2>mDisplayHeight) {
+				log("isOutOfView: true");
 				return true;
 			}
 			else {
