@@ -61,7 +61,7 @@ public class PlaceViewActivity extends ListActivity implements LocationListener 
         // Must handle 3 cases:
         // 1) The current location is new - download new Place Badge. Issue the
         // following log call:
-				if (!mAdapter.intersects(mLastLocationReading)){
+			if (!mAdapter.intersects(mLastLocationReading)){
 				log("Starting Place Download");
 				new PlaceDownloaderTask(PlaceViewActivity.this).execute(mLastLocationReading);
 				}
