@@ -68,7 +68,7 @@ public class PlaceViewActivity extends ListActivity implements LocationListener 
         // 2) The current location has been seen before - issue Toast message.
         // Issue the following log call:
         
-		if (mAdapter.intersects(mLastLocationReading)){
+			else if (mAdapter.intersects(mLastLocationReading)){
 				log("You already have this location badge");
         		Toast toast = Toast.makeText(getApplicationContext(), "You already have this location badge", Toast.LENGTH_LONG);
 				toast.show();
@@ -77,7 +77,7 @@ public class PlaceViewActivity extends ListActivity implements LocationListener 
         // 3) There is no current location - response is up to you. The best
         // solution is to disable the footerView until you have a location.
         // Issue the following log call:
-        if (mLastLocationReading == null){
+			else if (mLastLocationReading == null){
 				log("Location data is not available");
  				}
 			}
@@ -99,7 +99,7 @@ public class PlaceViewActivity extends ListActivity implements LocationListener 
 		if (null == (mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE)))
 			finish();
 		mLastLocationReading = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-		if (mLastLocationReading.getTime()>FIVE_MINS || mLastLocationReading == null){
+		if ((mLastLocationReading == null) ||(mLastLocationReading.getTime()>FIVE_MINS)){
 		        // TODO - register to receive location updates from NETWORK_PROVIDER
 
 				mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, mMinTime, mMinDistance, this);
@@ -140,11 +140,13 @@ public class PlaceViewActivity extends ListActivity implements LocationListener 
         // the current location
         // 3) If the current location is newer than the last locations, keep the
         // current location.
+		if (currentLocation!=null){
 		if ((mLastLocationReading==null) || (currentLocation.getTime() > mLastLocationReading.getTime()))
 		{
 			mLastLocationReading = currentLocation;
 		}
-				
+		}
+	
 	}
 
 	@Override
