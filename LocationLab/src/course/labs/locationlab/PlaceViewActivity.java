@@ -61,25 +61,26 @@ public class PlaceViewActivity extends ListActivity implements LocationListener 
         // Must handle 3 cases:
         // 1) The current location is new - download new Place Badge. Issue the
         // following log call:
-			if (!mAdapter.intersects(mLastLocationReading)){
-				log("Starting Place Download");
-				new PlaceDownloaderTask(PlaceViewActivity.this).execute(mLastLocationReading);
-				}
+				if (mLastLocationReading == null){
+					log("Location data is not available");
+	 				}
+				else if (!mAdapter.intersects(mLastLocationReading)){
+					log("Starting Place Download");
+					new PlaceDownloaderTask(PlaceViewActivity.this).execute(mLastLocationReading);
+					}
         // 2) The current location has been seen before - issue Toast message.
         // Issue the following log call:
         
-			else if (mAdapter.intersects(mLastLocationReading)){
-				log("You already have this location badge");
-        		Toast toast = Toast.makeText(getApplicationContext(), "You already have this location badge", Toast.LENGTH_LONG);
-				toast.show();
-		}
+				else if (mAdapter.intersects(mLastLocationReading)){
+					log("You already have this location badge");
+					Toast toast = Toast.makeText(getApplicationContext(), "You already have this location badge", Toast.LENGTH_LONG);
+					toast.show();
+				}
 						
         // 3) There is no current location - response is up to you. The best
         // solution is to disable the footerView until you have a location.
         // Issue the following log call:
-			else if (mLastLocationReading == null){
-				log("Location data is not available");
- 				}
+			 
 			}
 		});
 		
