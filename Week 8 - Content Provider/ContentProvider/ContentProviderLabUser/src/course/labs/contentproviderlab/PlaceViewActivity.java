@@ -108,11 +108,12 @@ public class PlaceViewActivity extends ListActivity implements
 		// TODO - Create and set empty PlaceViewAdapter
         // ListView's adapter should be a PlaceViewAdapter called mCursorAdapter
 
-		
-		
+		ContentResolver contentResolver=getContentResolver();
+		Cursor cursor=contentResolver.query(PlaceBadgesContract.CONTENT_URI, null, null, null, null);
+		mCursorAdapter=new PlaceViewAdapater(this, cursor,0);
 		
 		// TODO - Initialize a CursorLoader
-
+		getLoaderManager.initLoader(0,null,null);
         
 	}
 
