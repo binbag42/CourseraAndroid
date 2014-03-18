@@ -200,16 +200,15 @@ public class PlaceViewActivity extends ListActivity implements
 		log("Entered onCreateLoader()");
 
 		// TODO - Create a new CursorLoader and return it
-		
-        
-        return null;
+		mCursorLoader=new CursorLoader(getApplicationContext(),PlaceBadgesContract.CONTENT_URI,null,null,null,null);    
+        return mCursorLoader;
 	}
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> newLoader, Cursor newCursor) {
 
 		// TODO - Swap in the newCursor
-
+		mCursorAdapter.swapCursor(newCursor);
 	
     }
 
@@ -217,7 +216,7 @@ public class PlaceViewActivity extends ListActivity implements
 	public void onLoaderReset(Loader<Cursor> newLoader) {
 
 		// TODO - Swap in a null Cursor
-
+		mCursorAdapter.swapCursor(null);
 	
     }
 
