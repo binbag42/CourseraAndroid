@@ -3,8 +3,8 @@ package course.labs.contentproviderlab;
 import java.util.ArrayList;
 
 import android.app.ListActivity;
-import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
@@ -18,16 +18,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import course.labs.contentproviderlab.provider.PlaceBadgesContract;
-import course.labs.locationlab.MockLocationProvider;
-import course.labs.locationlab.PlaceDownloaderTask;
-import course.labs.locationlab.PlaceViewActivity;
-import course.labs.locationlab.PlaceViewAdapter;
-import course.labs.locationlab.R;
 
 public class PlaceViewActivity extends ListActivity implements
 		LocationListener, LoaderCallbacks<Cursor> {
@@ -61,7 +54,7 @@ public class PlaceViewActivity extends ListActivity implements
 		// TODO - Set up the app's user interface
         // This class is a ListActivity, so it has its own ListView
         // ListView's adapter should be a PlaceViewAdapter
-		mAdapter=new PlaceViewAdapter(getApplicationContext());
+		mCursorAdapter=new PlaceViewAdapter(getApplicationContext());
 		getListView().setFooterDividersEnabled(true);
         
 		// TODO - add a footerView to the ListView
@@ -83,14 +76,14 @@ public class PlaceViewActivity extends ListActivity implements
 				if (mLastLocationReading == null){
 					log("Location data is not available");
 	 				}
-				else if (!mAdapter.intersects(mLastLocationReading)){
+				else if (!mCursorAdapter.intersects(mLastLocationReading)){
 					log("Starting Place Download");
 					new PlaceDownloaderTask(PlaceViewActivity.this).execute(mLastLocationReading);
 					}
         // 2) The current location has been seen before - issue Toast message.
         // Issue the following log call:
         
-				else if (mAdapter.intersects(mLastLocationReading)){
+				else if (mCursorAdapter.intersects(mLastLocationReading)){
 					log("You already have this location badge");
 					Toast toast = Toast.makeText(getApplicationContext(), "You already have this location badge", Toast.LENGTH_LONG);
 					toast.show();
@@ -103,14 +96,14 @@ public class PlaceViewActivity extends ListActivity implements
 			}
 		});
 		
-		setListAdapter(mAdapter);
+		setListAdapter(mCursorAdapter);
 		
 		// TODO - Create and set empty PlaceViewAdapter
         // ListView's adapter should be a PlaceViewAdapter called mCursorAdapter
 
 		ContentResolver contentResolver=getContentResolver();
 		Cursor cursor=contentResolver.query(PlaceBadgesContract.CONTENT_URI, null, null, null, null);
-		mCursorAdapter=new PlaceViewAdapater(this, cursor,0);
+		mCursorAdapter=new PlaceViewAdapter(this, cursor,0);
 		
 		// TODO - Initialize a CursorLoader
 		getLoaderManager.initLoader(0,null,null);
@@ -200,7 +193,7 @@ public class PlaceViewActivity extends ListActivity implements
 		log("Entered onCreateLoader()");
 
 		// TODO - Create a new CursorLoader and return it
-		mCursorLoader=new CursorLoader(getApplicationContext(),PlaceBadgesContract.CONTENT_URI,null,null,null,null);    
+		CursorLoader mCursorLoader=new CursorLoader(getApplicationContext(),PlaceBadgesContract.CONTENT_URI,null,null,null,null);    
         return mCursorLoader;
 	}
 
